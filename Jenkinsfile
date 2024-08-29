@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo("Build the code using Maven") 
+                echo("checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'githubtoken', url: 'https://github.com/samer07/jenkins-pipeline-demo.git']])") 
                 //sh 'mvn clean package'
             }
         }
