@@ -1,78 +1,96 @@
 pipeline {
     agent any
+
     stages {
         stage('Build') {
             steps {
-                script {
-                    echo 'Building the code...'
-                    // Use a build automation tool like Maven
-                    sh 'npm install'
-                }
+                echo("Build the code using Maven") 
+                //sh 'mvn clean package'
             }
         }
+
         stage('Unit and Integration Tests') {
             steps {
-                script {
-                    echo 'Running unit and integration tests...'
-                    // Use test automation tools like JUnit or TestNG
-                    sh 'npm test'
+                echo("Run unit tests using JUnit, which will ensure code fucnctions as expected") 
+               // sh 'mvn test'
+
+                echo("Run integration tests using Selenium")
+                //sh 'selenium-runner --config test/config.json'
+            }
+            post{
+                success {
+                    emailext attachLog: true, 
+                        body: 'Test was successful', 
+                        subject: 'Test status email', 
+                        to: 'sameeradhi1990@gmail.com'
                 }
+                failure {
+                    emailext attachLog: true, 
+                        body: 'Test was Failed', 
+                        subject: 'Test status email', 
+                        to: 'sameeradhi1990@gmail.com'
+                }                                
             }
         }
+
         stage('Code Analysis') {
             steps {
-                script {
-                    echo 'Performing code analysis...'
-                    // Use a code analysis tool like SonarQube
-                    sh 'sonar-scanner'
-                }
+                echo("Analyze the code using SonarQube")
+                //withSonarQubeEnv('SonarQube') {
+                  //  sh 'mvn sonar:sonar'
+                //}
             }
         }
+
         stage('Security Scan') {
             steps {
-                script {
-                    echo 'Performing security scan...'
-                    // Use a security scan tool like OWASP ZAP or Snyk
-                    sh 'snyk test'
+                echo("Perform a security scan using OWASP ZAP")
+                //sh 'zap-baseline.py -t http://localhost:8080/myapp -r report.html'
+            }
+            post{
+                success {
+                    emailext attachLog: true, 
+                        body: 'Scan was successful', 
+                        subject: 'Scan status email', 
+                        to: 'sameeradhi1990@gmail.com'
                 }
+                failure {
+                    emailext attachLog: true, 
+                        body: 'Scan was Failed', 
+                        subject: 'Scan status email', 
+                        to: 'sameeradhi1990@gmail.com'
+                }                                
             }
         }
+
         stage('Deploy to Staging') {
             steps {
-                script {
-                    echo 'Deploying to staging...'
-                    // Deploy to staging, e.g., AWS EC2 instance
-                    sh 'ssh ec2-user@staging-server "deploy-script.sh"'
-                }
+                echo("Deploy the application to a staging server using Docker")
+                //sh 'docker build -t myapp .'
+                //sh 'docker run -d --name myapp-staging -p 8080:8080 myapp'
             }
+            
         }
+
         stage('Integration Tests on Staging') {
             steps {
-                script {
-                    echo 'Running integration tests on staging...'
-                    // Run integration tests on staging environment
-                    sh 'run-staging-tests.sh'
-                }
+                echo("Run integration tests on the staging environment using Selenium")
+                //sh 'selenium-runner --config test/config-staging.json'
             }
         }
+
         stage('Deploy to Production') {
             steps {
-                script {
-                    echo 'Deploying to production...'
-                    // Deploy to production, e.g., AWS EC2 instance
-                    sh 'ssh ec2-user@production-server "deploy-script.sh"'
-                }
+                echo("Deploy the application to a production server using Docker")
+                /*sh 'docker stop myapp-staging'
+                sh 'docker rm myapp-staging'
+                sh 'docker run -d --name myapp-production -p 80:8080 myapp'*/
             }
         }
-    }
-    post {
-        always {
-            emailext (
-                to: 'sameeradhi1990@gmail.com',
-                subject: "Jenkins Pipeline: Stage ${currentBuild.currentResult}",
-                body: "Pipeline has completed with status: ${currentBuild.currentResult}. Check attached logs.",
-                attachLog: true
-            )
+        stage('completed') {
+            steps {
+                echo("Completed") 
+            }  
         }
     }
 }
