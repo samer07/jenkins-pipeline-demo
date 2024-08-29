@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     tools {
-        maven 'Maven3'  // Use the name you provided in the Global Tool Configuration
+        maven 'Maven 3.9.9'  // Use the name you provided in the Global Tool Configuration
     }
 
     stages {
