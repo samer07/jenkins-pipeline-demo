@@ -2,35 +2,43 @@ pipeline {
     agent any
     
     tools {
-        maven 'Maven 3.9.9'  // Use the name you provided in the Global Tool Configuration
+        maven 'Maven 3.9.9'
     }
 
     stages {
         stage('Build') {
             steps {
                 echo 'Building the code using Maven'
-                sh 'mvn clean package'
+                dir('project') {  // Change to the directory containing the pom.xml
+                    sh 'mvn clean package'
+                }
             }
         }
 
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Running unit and integration tests using JUnit'
-                sh 'mvn test'
+                dir('project') {
+                    sh 'mvn test'
+                }
             }
         }
 
         stage('Code Analysis') {
             steps {
                 echo 'Running code analysis using SonarQube'
-                sh 'sonar-scanner'
+                dir('project') {
+                    sh 'sonar-scanner'
+                }
             }
         }
 
         stage('Security Scan') {
             steps {
                 echo 'Running security scan using OWASP Dependency-Check'
-                sh 'dependency-check.sh'
+                dir('project') {
+                    sh 'dependency-check.sh'
+                }
             }
         }
 
