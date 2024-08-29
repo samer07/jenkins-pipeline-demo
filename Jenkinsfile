@@ -1,95 +1,80 @@
 pipeline {
     agent any
-
+    
     stages {
         stage('Build') {
             steps {
-                // Build steps using Maven
+                // This step builds the code using Maven
+                echo 'Building the code using Maven'
+                sh 'mvn clean package'
             }
         }
 
         stage('Unit and Integration Tests') {
             steps {
-                // Run unit and integration tests
-            }
-            post {
-                always {
-                    script {
-                        def testStatus = currentBuild.currentResult
-                        emailext (
-                            to: 'sameeradhi1990@gmail.com',
-                            subject: "Test Stage ${testStatus}: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
-                            body: "The Unit and Integration Tests have ${testStatus}. See attached logs.",
-                            attachmentsPattern: '**/test-logs/*.log'
-                        )
-                    }
-                }
+                // This step runs unit tests and integration tests using JUnit
+                echo 'Running unit and integration tests using JUnit'
+                sh 'mvn test'
             }
         }
 
         stage('Code Analysis') {
             steps {
-                // Run SonarQube analysis
+                // This step runs code analysis using SonarQube
+                echo 'Running code analysis using SonarQube'
+                sh 'sonar-scanner'
             }
         }
 
         stage('Security Scan') {
             steps {
-                // Perform security scan using OWASP Dependency-Check
-            }
-            post {
-                always {
-                    script {
-                        def scanStatus = currentBuild.currentResult
-                        emailext (
-                            to: 'sameeradhi1990@gmail.com',
-                            subject: "Security Scan ${scanStatus}: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
-                            body: "The Security Scan has ${scanStatus}. See attached logs.",
-                            attachmentsPattern: '**/security-scan/*.log'
-                        )
-                    }
-                }
+                // This step performs a security scan using OWASP Dependency-Check
+                echo 'Running security scan using OWASP Dependency-Check'
+                sh 'dependency-check.sh'
             }
         }
 
         stage('Deploy to Staging') {
             steps {
-                // Deploy to staging environment
+                // This step deploys the application to the staging environment
+                echo 'Deploying to staging environment'
+                sh 'scp target/app.jar user@staging-server:/path/to/deploy/'
             }
         }
 
         stage('Integration Tests on Staging') {
             steps {
-                // Run integration tests on staging
+                // This step runs integration tests in the staging environment
+                echo 'Running integration tests on staging environment'
+                sh 'run-integration-tests.sh'
             }
         }
 
         stage('Deploy to Production') {
             steps {
-                // Deploy to production environment
+                // This step deploys the application to the production environment
+                echo 'Deploying to production environment'
+                sh 'scp target/app.jar user@production-server:/path/to/deploy/'
             }
         }
     }
 
     post {
         success {
-            // Optional global success email
+            // This step sends an email when the pipeline succeeds
+            echo 'Pipeline completed successfully.'
+            emailext(subject: 'Pipeline Success',
+                     body: 'Pipeline completed successfully.',
+                     to: 'sameeradhi1990@gmail.com',
+                     attachLog: true)
         }
         failure {
-            // Optional global failure email
+            // This step sends an email when the pipeline fails
+            echo 'Pipeline failed.'
+            emailext(subject: 'Pipeline Failure',
+                     body: 'Pipeline failed.',
+                     to: 'sameeradhi1990@gmail.com',
+                     attachLog: true)
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
