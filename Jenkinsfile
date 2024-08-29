@@ -17,7 +17,7 @@ pipeline {
                     script {
                         def testStatus = currentBuild.currentResult
                         emailext (
-                            to: 'recipient@example.com',
+                            to: 'sameeradhi1990@gmail.com',
                             subject: "Test Stage ${testStatus}: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
                             body: "The Unit and Integration Tests have ${testStatus}. See attached logs.",
                             attachmentsPattern: '**/test-logs/*.log'
@@ -42,7 +42,7 @@ pipeline {
                     script {
                         def scanStatus = currentBuild.currentResult
                         emailext (
-                            to: 'recipient@example.com',
+                            to: 'sameeradhi1990@gmail.com',
                             subject: "Security Scan ${scanStatus}: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
                             body: "The Security Scan has ${scanStatus}. See attached logs.",
                             attachmentsPattern: '**/security-scan/*.log'
@@ -80,3 +80,16 @@ pipeline {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
