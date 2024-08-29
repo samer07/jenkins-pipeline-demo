@@ -1,15 +1,12 @@
 pipeline {
     agent any
-    tools{
-        maven 'Maven 3.9.9'
-    }
     stages {
         stage('Build') {
             steps {
                 script {
                     echo 'Building the code...'
                     // Use a build automation tool like Maven
-                    sh 'mvn clean install'
+                    sh 'npm install'
                 }
             }
         }
@@ -18,7 +15,7 @@ pipeline {
                 script {
                     echo 'Running unit and integration tests...'
                     // Use test automation tools like JUnit or TestNG
-                    sh 'mvn test'
+                    sh 'npm test'
                 }
             }
         }
