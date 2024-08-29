@@ -1,71 +1,78 @@
 pipeline {
     agent any
-
     stages {
         stage('Build') {
             steps {
-                echo 'Building the code using custom build script'
-                sh './build.sh'  // Adjust the command according to your build script
+                script {
+                    echo 'Building the code...'
+                    // Use a build automation tool like Maven
+                    sh 'mvn clean install'
+                }
             }
         }
-
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Running unit and integration tests'
-                sh './run-tests.sh'  // Adjust the command according to your test script
+                script {
+                    echo 'Running unit and integration tests...'
+                    // Use test automation tools like JUnit or TestNG
+                    sh 'mvn test'
+                }
             }
         }
-
         stage('Code Analysis') {
             steps {
-                echo 'Running code analysis'
-                sh './run-code-analysis.sh'  // Adjust the command according to your analysis script
+                script {
+                    echo 'Performing code analysis...'
+                    // Use a code analysis tool like SonarQube
+                    sh 'sonar-scanner'
+                }
             }
         }
-
         stage('Security Scan') {
             steps {
-                echo 'Running security scan'
-                sh './run-security-scan.sh'  // Adjust the command according to your security scan script
+                script {
+                    echo 'Performing security scan...'
+                    // Use a security scan tool like OWASP ZAP or Snyk
+                    sh 'snyk test'
+                }
             }
         }
-
         stage('Deploy to Staging') {
             steps {
-                echo 'Deploying to staging environment'
-                sh './deploy-to-staging.sh'
+                script {
+                    echo 'Deploying to staging...'
+                    // Deploy to staging, e.g., AWS EC2 instance
+                    sh 'ssh ec2-user@staging-server "deploy-script.sh"'
+                }
             }
         }
-
         stage('Integration Tests on Staging') {
             steps {
-                echo 'Running integration tests on staging environment'
-                sh './run-integration-tests-staging.sh'
+                script {
+                    echo 'Running integration tests on staging...'
+                    // Run integration tests on staging environment
+                    sh 'run-staging-tests.sh'
+                }
             }
         }
-
         stage('Deploy to Production') {
             steps {
-                echo 'Deploying to production environment'
-                sh './deploy-to-production.sh'
+                script {
+                    echo 'Deploying to production...'
+                    // Deploy to production, e.g., AWS EC2 instance
+                    sh 'ssh ec2-user@production-server "deploy-script.sh"'
+                }
             }
         }
     }
-
     post {
-        success {
-            echo 'Pipeline completed successfully.'
-            emailext(subject: 'Pipeline Success',
-                     body: 'Pipeline completed successfully.',
-                     to: 'sameeradhi1990@gmail.com',
-                     attachLog: true)
-        }
-        failure {
-            echo 'Pipeline failed.'
-            emailext(subject: 'Pipeline Failure',
-                     body: 'Pipeline failed.',
-                     to: 'sameeradhi1990@gmail.com',
-                     attachLog: true)
+        always {
+            emailext (
+                to: 'sameeradhi1990@gmail.com',
+                subject: "Jenkins Pipeline: Stage ${currentBuild.currentResult}",
+                body: "Pipeline has completed with status: ${currentBuild.currentResult}. Check attached logs.",
+                attachLog: true
+            )
         }
     }
 }
