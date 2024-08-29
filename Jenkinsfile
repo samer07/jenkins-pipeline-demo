@@ -1,59 +1,82 @@
 pipeline {
     agent any
+
     stages {
         stage('Build') {
             steps {
-                echo 'Building...'
+                // Build steps using Maven
             }
         }
+
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Running unit and integration tests...'
+                // Run unit and integration tests
             }
             post {
                 always {
-                    emailext (
-                        subject: "Unit and Integration Tests Result: ${currentBuild.currentResult}",
-                        body: "Tests completed with result: ${currentBuild.currentResult}\n\n${env.BUILD_URL}testResults",
-                        to: 'sameeradhi1990@gmail.com'
-                    )
+                    script {
+                        def testStatus = currentBuild.currentResult
+                        emailext (
+                            to: 'sameeradhi1990@gmail.com',
+                            subject: "Test Stage ${testStatus}: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                            body: "The Unit and Integration Tests have ${testStatus}. See attached logs.",
+                            attachmentsPattern: '**/test-logs/*.log'
+                        )
+                    }
                 }
             }
         }
+
         stage('Code Analysis') {
             steps {
-                echo 'Performing code analysis...'
+                // Run SonarQube analysis
             }
         }
+
         stage('Security Scan') {
             steps {
-                echo 'Performing security scan...'
+                // Perform security scan using OWASP Dependency-Check
             }
             post {
                 always {
-                    emailext (
-                        subject: "Pipeline ${currentBuild.fullDisplayName} - ${currentBuild.result}",
-                        body: """<p>${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.result}</p>""",
-                        to: 'sameeradhi1990@gmail.com'
-                    )
+                    script {
+                        def scanStatus = currentBuild.currentResult
+                        emailext (
+                            to: 'sameeradhi1990@gmail.com',
+                            subject: "Security Scan ${scanStatus}: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                            body: "The Security Scan has ${scanStatus}. See attached logs.",
+                            attachmentsPattern: '**/security-scan/*.log'
+                        )
+                    }
                 }
             }
-
         }
+
         stage('Deploy to Staging') {
             steps {
-                echo 'Deploying to staging...'
+                // Deploy to staging environment
             }
         }
+
         stage('Integration Tests on Staging') {
             steps {
-                echo 'Running integration tests on staging...'
+                // Run integration tests on staging
             }
         }
+
         stage('Deploy to Production') {
             steps {
-                echo 'Deploying to production...'
+                // Deploy to production environment
             }
+        }
+    }
+
+    post {
+        success {
+            // Optional global success email
+        }
+        failure {
+            // Optional global failure email
         }
     }
 }
