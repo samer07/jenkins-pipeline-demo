@@ -72,21 +72,21 @@ pipeline {
             emailext(
                 subject: "Build ${env.BUILD_NUMBER} - SUCCESS",
                 body: "The build was successful!\n\nDetails: ${env.BUILD_URL}",
-                to: 'recipient@example.com'
+                to: 'sameeradhi1990@gmail.com'
             )
         }
         failure {
             emailext(
                 subject: "Build ${env.BUILD_NUMBER} - FAILURE",
                 body: "The build failed.\n\nDetails: ${env.BUILD_URL}\n\nLogs:\n${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log",
-                to: 'recipient@example.com'
+                to: 'sameeradhi1990@gmail.com'
             )
         }
         always {
             emailext(
                 subject: "Build ${env.BUILD_NUMBER} - COMPLETED",
                 body: "Build ${env.BUILD_NUMBER} has completed.\n\nDetails: ${env.BUILD_URL}\n\nLogs:\n${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log",
-                to: 'recipient@example.com'
+                to: 'sameeradhi1990@gmail.com'
             )
         }
     }

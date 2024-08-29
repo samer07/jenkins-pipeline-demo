@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <script type="module" src="controller.js"></script>
+    <link type = "text/css" rel="stylesheet" href="style.css" />
+    <title>Travel Nepal</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav__header">
+        <div class="nav__logo">
+          <a href="index.html">Travel<span>Nepal</span></a>
+        </div>
+        <div class="nav__menu__btn" id="menu-btn">
+          <span><i class="ri-menu-line"></i></span>
+        </div>
+      </div>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="des.html">Destination</a></li>
+        <li><a href="#">Package</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <!-- <div class="nav__btns">
+        <button class="btn sign__up">Sign Up</button>
+        <button class="btn sign__in">Sign In</button>
+      </div> -->
+    </nav>
+    <header class="header__container">
+      <div class="header__image">
+        <div class="header__image__card header__image__card-1">
+          <span><i class="ri-key-line"></i></span>
+          Hotel Booking
+        </div>
+        <div class="header__image__card header__image__card-2">
+          <span><i class="ri-passport-line"></i></span>
+          Flight Tickets
+        </div>
+        <div class="header__image__card header__image__card-3">
+          <span><i class="ri-map-2-line"></i></span>
+          Local Events
+        </div>
+        <div class="header__image__card header__image__card-4">
+          <span><i class="ri-guide-line"></i></span>
+          Tour Guide
+        </div>
+        <!-- Image -->
+        <img src="assets/namastee.png" alt="header" />
+      </div>
+      <div class="header__content">
+        <h1>LET'S GO!<br /><span>Nepal</span> IS <br />WAITING FOR YOU</h1>
+        <p>
+          Nepal is a captivating destination with breathtaking landscapes and rich cultural heritage. 
+          Nestled in the Himalayas, it offers stunning views of snow-capped peaks like Mount Everest. 
+          Trekking trails such as the Annapurna Circuit and Everest Base Camp immerse travelers in nature 
+          and local culture. Beyond the mountains, Nepal boasts lush jungles and serene lakes like Chitwan National 
+          Park and Phewa Lake. The vibrant culture, ancient temples, and festivals of the Kathmandu Valley make Nepal an 
+          unforgettable destination for adventure and tranquility.
+        </p>
+        <form action="/">
+          <div class="input__row">
+            <div class="input__group">
+              <h5>Destination</h5>
+              <div>
+                <span><i class="ri-map-pin-line"></i></span>
+                <input type="text" placeholder="Kathmandu, Nepal" />
+              </div>
+            </div>
+            <div class="input__group">
+              <h5>Date</h5>
+              <div>
+                <span><i class="ri-calendar-2-line"></i></span>
+                <input type="text" placeholder="3 August 2024" />
+              </div>
+            </div>
+          </div>
+          <button type="submit">Search</button>
+        </form>
+        <div class="bar">
+          Copyright © 2024. All rights reserved.
+        </div>
+      </div>
+    </header>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script type = "text/javascript" src="main.js"></script>
+  </body>
+</html>
