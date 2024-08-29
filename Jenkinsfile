@@ -32,12 +32,13 @@ pipeline {
             post {
                 always {
                     emailext (
-                        subject: "Security Scan Result: ${currentBuild.currentResult}",
-                        body: "Security scan completed with result: ${currentBuild.currentResult}\n\n${env.BUILD_URL}securityScanResults",
+                        subject: "Pipeline ${currentBuild.fullDisplayName} - ${currentBuild.result}",
+                        body: """<p>${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.result}</p>""",
                         to: 'sameeradhi1990@gmail.com'
                     )
                 }
             }
+
         }
         stage('Deploy to Staging') {
             steps {
